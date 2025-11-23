@@ -165,7 +165,6 @@ class AngleRange:
                     return angle_rad > start_rad or angle_rad < end_rad
                     
         elif isinstance(item, AngleRange):
-            # Check if other range is contained in this range
             if self.include_start and self.include_end:
                 if item.include_start:
                     if not (item.start in self):
@@ -184,38 +183,27 @@ class AngleRange:
                         return False
                 
                 return True
-            
-            # For non-inclusive ranges, the logic is more complex
-            # We'll use a simpler approach: check if the entire range is contained
-            # by testing key points and ensuring no boundary conflicts
-            
-            # This is a simplified implementation - in practice, you might want
-            # more sophisticated handling of edge cases
+
             if item.start == item.end and not self.include_start and not self.include_end:
                 return item.start not in self  # Empty range case
-            
-            # Check if both endpoints are in the range
+
             start_in = item.start in self
             end_in = item.end in self
             
             if not start_in and not end_in:
                 return False
-            
-            # If range doesn't wrap around
+
             if self.start._radians <= self.end._radians and item.start._radians <= item.end._radians:
-                # Check if there's overlap
                 if item.start._radians >= self.end._radians or item.end._radians <= self.start._radians:
                     return False
-                
-                # For non-inclusive boundaries, ensure there's actual overlap
+
                 if not self.include_start and item.start._radians == self.start._radians:
                     return False
                 if not self.include_end and item.end._radians == self.end._radians:
                     return False
                 
                 return True
-            
-            # Handle wrap-around cases - simplified
+
             return start_in or end_in
             
         return False
@@ -233,8 +221,6 @@ class AngleRange:
             return AngleRange(new_start, new_end, self.include_start, self.include_end)
         
         elif isinstance(other, AngleRange):
-            # Addition of two ranges returns a list of possible ranges
-            # This is a simplified implementation
             result_ranges = []
             
             # Add start and end points
@@ -247,7 +233,6 @@ class AngleRange:
             
             for p1, p2 in additions:
                 sum_angle = p1 + p2
-                # Create a degenerate range (single point)
                 point_range = AngleRange(sum_angle, sum_angle, True, True)
                 if point_range not in result_ranges:
                     result_ranges.append(point_range)
@@ -269,10 +254,8 @@ class AngleRange:
             return AngleRange(new_start, new_end, self.include_start, self.include_end)
         
         elif isinstance(other, AngleRange):
-            # Subtraction of two ranges returns a list of possible ranges
             result_ranges = []
-            
-            # Subtract points
+
             subtractions = [
                 (self.start, other.start),
                 (self.start, other.end),
@@ -282,7 +265,6 @@ class AngleRange:
             
             for p1, p2 in subtractions:
                 diff_angle = p1 - p2
-                # Create a degenerate range (single point)
                 point_range = AngleRange(diff_angle, diff_angle, True, True)
                 if point_range not in result_ranges:
                     result_ranges.append(point_range)
@@ -295,7 +277,7 @@ def demo():
     print("Демонстрация класса Angle:")
     a1 = Angle(90, 'degrees')
     a2 = Angle(pi/2, 'radians')
-    a3 = Angle(450, 'degrees')  # Should be equivalent to 90 degrees
+    a3 = Angle(450, 'degrees')
     
     print(f"a1 = {a1}")
     print(f"a2 = {a2}")
@@ -312,7 +294,7 @@ def demo():
     print("\nДемонстрация класса AngleRange:")
     r1 = AngleRange(0, pi/2)  # [0, π/2]
     r2 = AngleRange(Angle(30, 'degrees'), Angle(60, 'degrees'))  # [30°, 60°]
-    r3 = AngleRange(pi, 0, include_start=False, include_end=False)  # (π, 2π) or (π, 0) wrapping around
+    r3 = AngleRange(pi, 0, include_start=False, include_end=False)
     
     print(f"r1 = {r1}")
     print(f"r2 = {r2}")
@@ -326,7 +308,7 @@ def demo():
     print(f"{a4} в r2: {a4 in r2}")
     
     # Проверка вхождения диапазонов
-    r4 = AngleRange(10, 50, 'degrees')
+    r4 = AngleRange(10, 50)
     print(f"{r4} в r1: {r4 in r1}")
     
     # Операции с диапазонами
