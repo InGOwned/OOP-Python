@@ -59,7 +59,7 @@ def load_font(path: str, alphabet: str) -> dict[str, list[str]]:
 
 
 class Printer:
-    _font = load_font("fonts/font7.txt", RUS_ALPHABET)
+    _font = load_font("fonts/font_h_7.txt", RUS_ALPHABET)
 
     def __init__(self, color, position, symbol="*"):
         self.color = color
