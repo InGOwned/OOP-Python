@@ -1,22 +1,36 @@
-from enum import Enum
-from typing import Tuple
+from typing import NamedTuple
 
 
-class ANSI:
-    RESET = "\033[0m"
-    MOVE = "\033[{row};{col}H"
+class _ANSI(NamedTuple):
+    RESET: str
+    MOVE: str
 
 
-class Color(Enum):
-    BLACK = "\033[30m"
-    RED = "\033[31m"
-    GREEN = "\033[32m"
-    YELLOW = "\033[33m"
-    BLUE = "\033[34m"
-    MAGENTA = "\033[35m"
-    CYAN = "\033[36m"
-    WHITE = "\033[37m"
+ANSI = _ANSI(
+    RESET="\033[0m",
+    MOVE="\033[{row};{col}H"
+)
 
+
+class Color:
+    def __init__(self, code: str):
+        self.value = code
+
+
+def _make_colors():
+    return {
+        "BLACK": Color("\033[30m"),
+        "RED": Color("\033[31m"),
+        "GREEN": Color("\033[32m"),
+        "YELLOW": Color("\033[33m"),
+        "BLUE": Color("\033[34m"),
+        "MAGENTA": Color("\033[35m"),
+        "CYAN": Color("\033[36m"),
+        "WHITE": Color("\033[37m"),
+    }
+
+
+Color = type("ColorSpace", (), _make_colors())
 
 RUS_ALPHABET = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
