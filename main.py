@@ -82,7 +82,6 @@ class SocketHandler(LogHandlerProtocol):
 
 class SyslogHandler(LogHandlerProtocol):
     def handle(self, log_level, text):
-        # В реальности тут был бы вызов системной утилиты или библиотеки
         print(f"SYSLOG: {text}", file=sys.stderr)
 
 
@@ -94,7 +93,6 @@ class FtpHandler(LogHandlerProtocol):
         self.filename = filename
 
     def handle(self, log_level, text):
-        # Заглушка для FTP
         print(f"FTP {self.username}@{self.host}:{self.filename} <= {text}")
 
 
@@ -118,16 +116,13 @@ class Logger:
         self.handlers = handlers or []
 
     def log(self, log_level, text):
-        # Проверяем фильтры
         if not all(f.match(log_level, text) for f in self.filters):
             return
 
-        # Применяем форматтеры
         formatted_text = text
         for formatter in self.formatters:
             formatted_text = formatter.format(log_level, formatted_text)
 
-        # Отправляем обработчикам
         for handler in self.handlers:
             handler.handle(log_level, formatted_text)
 
@@ -142,17 +137,13 @@ class Logger:
 
 
 if __name__ == "__main__":
-    # Создаем фильтры
     level_filter = LevelFilter(LogLevel.WARN)
 
-    # Создаем форматтер
     formatter = TimestampLevelFormatter()
 
-    # Создаем обработчики
     console_handler = ConsoleHandler()
     file_handler = FileHandler("app.log")
 
-    # Создаем логгер
     logger = Logger(
         filters=[level_filter],
         formatters=[formatter],
