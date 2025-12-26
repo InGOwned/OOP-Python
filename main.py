@@ -10,15 +10,6 @@ class LogLevel:
     WARN = "WARN"
     ERROR = "ERROR"
 
-
-class LevelFilter:
-    def __init__(self, allowed_levels):
-        self.allowed_levels = allowed_levels
-
-    def match(self, log_level, text):
-        return log_level in self.allowed_levels
-
-
 class LogFilterProtocol(ABC):
     @abstractmethod
     def match(self, log_level, text):
@@ -150,7 +141,7 @@ if __name__ == "__main__":
         handlers=[console_handler, file_handler]
     )
 
-    # Тестируем
+    # Тест
     logger.log_info("Это информационное сообщение")
     logger.log_warn("Это предупреждение")
     logger.log_error("Это ошибка")
