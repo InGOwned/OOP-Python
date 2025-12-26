@@ -130,7 +130,6 @@ class AngleRange:
                 self.include_end == other.include_end)
 
     def length(self) -> float:
-        # Calculate the length of the range
         diff = self.end._radians - self.start._radians
         if diff < 0:
             diff += 2 * pi
@@ -145,7 +144,7 @@ class AngleRange:
             start_rad = self.start._radians
             end_rad = self.end._radians
             
-            if start_rad <= end_rad:  # Normal case
+            if start_rad <= end_rad:
                 if self.include_start and self.include_end:
                     return start_rad <= angle_rad <= end_rad
                 elif self.include_start:
@@ -185,7 +184,7 @@ class AngleRange:
                 return True
 
             if item.start == item.end and not self.include_start and not self.include_end:
-                return item.start not in self  # Empty range case
+                return item.start not in self
 
             start_in = item.start in self
             end_in = item.end in self
@@ -222,8 +221,7 @@ class AngleRange:
         
         elif isinstance(other, AngleRange):
             result_ranges = []
-            
-            # Add start and end points
+
             additions = [
                 (self.start, other.start),
                 (self.start, other.end),
