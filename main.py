@@ -128,7 +128,7 @@ class Logger:
 
 
 if __name__ == "__main__":
-    level_filter = LevelFilter(LogLevel.WARN)
+    level_filter = LevelFilter(LogLevel.INFO)
 
     formatter = TimestampLevelFormatter()
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     file_handler = FileHandler("app.log")
 
     logger = Logger(
-        filters=[level_filter],
+        filters=[],
         formatters=[formatter],
         handlers=[console_handler, file_handler]
     )
